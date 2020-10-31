@@ -15,7 +15,7 @@ router.post('/register', async (req, res) => {
     //Request body
     const { name, username, password } = req.body;
     if(!name || !username || !password) return res.status(400).json({error: "All fields must be filled"})
-    if(password.length < 8) {return res.status(411).json({error: "Password length must be 8 or more characters"})}
+    if(password.length < 8) {return res.status(400).json({error: "Password length must be 8 or more characters"})}
   
    // BCrypt Salt
    const salt = await bcrypt.genSalt(10);
@@ -31,7 +31,8 @@ router.post('/register', async (req, res) => {
             message: "User saved"
         });
     } catch (err) {
-        res.status(400).json({error: err.message} );
+        res.status(500).json({error: "Oops! Something went wrong"} );
+        console.log(err.message);
     }
 });
 
